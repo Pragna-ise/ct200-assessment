@@ -4,6 +4,11 @@ from app.services.markdown_parser import parse_markdown
 from app.services.tree_builder import assign_parents
 from app.services.ingestion_service import ingest_document
 from app.database.database import get_connection
+from app.services.change_detector import compare_versions
+from app.services.change_detector import (
+    compare_versions,
+    get_change_summary
+)
 
 router = APIRouter()
 
@@ -72,3 +77,20 @@ def ingest_v2():
         "message": "Version 2 ingested",
         "nodes_stored": count
     }
+@router.get("/compare")
+def compare_documents():
+
+    return compare_versions()
+@router.get("/compare")
+def compare_documents():
+
+    changes = compare_versions()
+
+    return {
+        "total_changes": len(changes),
+        "results": changes
+    }
+@router.get("/compare/summary")
+def compare_summary():
+
+    return get_change_summary()
