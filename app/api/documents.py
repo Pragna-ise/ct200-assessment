@@ -13,6 +13,9 @@ from app.services.browse_service import get_top_sections
 from app.services.browse_service import get_node
 from app.services.browse_service import search_nodes
 from app.services.browse_service import node_changes
+from app.services.generation_service import (
+    generate_test_cases
+)
 router = APIRouter()
 
 
@@ -112,4 +115,12 @@ def changes(logical_node_id: str):
 
     return node_changes(
         logical_node_id
+    )
+@router.post("/generate/{selection_id}")
+def generate(
+    selection_id: int
+):
+
+    return generate_test_cases(
+        selection_id
     )

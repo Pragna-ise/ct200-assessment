@@ -60,7 +60,6 @@ def create_tables():
     )
     """)
 
-    # Generations
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS generations(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
