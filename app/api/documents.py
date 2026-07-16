@@ -16,6 +16,9 @@ from app.services.browse_service import node_changes
 from app.services.generation_service import (
     generate_test_cases
 )
+from app.services.staleness_service import (
+    check_staleness
+)
 router = APIRouter()
 
 
@@ -124,3 +127,32 @@ def generate(
     return generate_test_cases(
         selection_id
     )
+@router.get(
+    "/generation/{generation_id}/staleness"
+)
+def generation_staleness(
+    generation_id: int
+):
+
+    return check_staleness(
+        generation_id
+    )
+def get_impact_level(
+    old_hash,
+    new_hash
+):
+
+    if old_hash == new_hash:
+
+        return "none"
+
+    return "unknown"
+    return {
+    "generation_id": generation_id,
+    "stale": stale,
+    "impact": (
+        "unknown"
+        if stale
+        else "none"
+    )
+}
