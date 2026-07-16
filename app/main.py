@@ -1,12 +1,10 @@
 from fastapi import FastAPI
+from app.api.documents import router as document_router
 
-app = FastAPI(
-    title="CT200 QA System",
-    version="1.0.0"
-)
+app = FastAPI()
+
+app.include_router(document_router)
 
 @app.get("/")
 def root():
-    return {
-        "message": "CT200 QA System Running"
-    }
+    return {"message": "CT200 QA System Running"}
