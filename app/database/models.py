@@ -10,10 +10,12 @@ def create_tables():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS document_nodes(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        version TEXT NOT NULL,
         title TEXT NOT NULL,
         content TEXT,
         level INTEGER,
-        parent TEXT
+        parent TEXT,
+        content_hash TEXT
     )
     """)
 
