@@ -9,7 +9,10 @@ from app.services.change_detector import (
     compare_versions,
     get_change_summary
 )
-
+from app.services.browse_service import get_top_sections
+from app.services.browse_service import get_node
+from app.services.browse_service import search_nodes
+from app.services.browse_service import node_changes
 router = APIRouter()
 
 
@@ -94,3 +97,19 @@ def compare_documents():
 def compare_summary():
 
     return get_change_summary()
+@router.get("/sections")
+def sections(version: str = "v2"):
+    return get_top_sections(version)
+@router.get("/node/{node_id}")
+def node(node_id: int):
+    return get_node(node_id)
+@router.get("/search")
+def search(q: str):
+
+    return search_nodes(q)
+@router.get("/changes/{logical_node_id}")
+def changes(logical_node_id: str):
+
+    return node_changes(
+        logical_node_id
+    )
