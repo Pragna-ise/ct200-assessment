@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.services.markdown_parser import parse_markdown
 from app.services.tree_builder import assign_parents
+from app.database.database import get_connection
 
 router = APIRouter()
 
@@ -20,3 +21,21 @@ def parse_document():
         }
         for node in nodes
     ]
+
+
+@router.get("/nodes")
+def get_nodes():
+
+    conn = get_connection()
+
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM document_nodes"
+    )
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return [dict(row) for row in rows]
