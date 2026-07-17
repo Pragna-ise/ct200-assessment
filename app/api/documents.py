@@ -19,6 +19,11 @@ from app.services.generation_service import (
 from app.services.staleness_service import (
     check_staleness
 )
+from app.services.retrieval_service import (
+    get_generation,
+    get_generations_by_selection,
+    get_generations_by_node
+)
 router = APIRouter()
 
 
@@ -156,3 +161,33 @@ def get_impact_level(
         else "none"
     )
 }
+@router.get(
+    "/generations/{generation_id}"
+)
+def generation(
+    generation_id: int
+):
+
+    return get_generation(
+        generation_id
+    )
+@router.get(
+    "/selection/{selection_id}/generations"
+)
+def selection_generations(
+    selection_id: int
+):
+
+    return get_generations_by_selection(
+        selection_id
+    )
+@router.get(
+    "/node/{node_id}/generations"
+)
+def node_generations(
+    node_id: int
+):
+
+    return get_generations_by_node(
+        node_id
+    )

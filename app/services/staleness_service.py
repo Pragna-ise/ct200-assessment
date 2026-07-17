@@ -60,8 +60,11 @@ def check_staleness(generation_id):
     )
 
     return {
-        "generation_id": generation_id,
-        "stale": stale,
-        "stored_hash": generation["source_hash"],
-        "current_hash": current_hash
-    }
+    "generation_id": generation_id,
+    "stale": stale,
+    "impact": (
+        "unknown"
+        if stale
+        else "none"
+    )
+}
