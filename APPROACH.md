@@ -368,13 +368,4 @@ Provides lightweight document-oriented storage for generated outputs.
 
 ---
 
-# 15. Future Improvements
-
-- SQLAlchemy ORM migration
-- MongoDB integration
-- Semantic node matching using embeddings
-- Structured JSON output from LLM
-- Automatic regeneration of stale outputs
-- Improved diff summaries
-- User authentication and access control
 
