@@ -92,9 +92,15 @@ def ingest_v2():
         "nodes_stored": count
     }
 @router.get("/compare")
+
 def compare_documents():
 
-    return compare_versions()
+    changes = compare_versions()
+
+    return {
+        "total_changes": len(changes),
+        "results": changes
+    }
 @router.get("/compare")
 def compare_documents():
 
