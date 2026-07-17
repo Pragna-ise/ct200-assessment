@@ -19,10 +19,10 @@ def calculate_selection_hash(selection_id):
 
     conn.close()
 
-    text = ""
-
-    for row in rows:
-        text += row["content"]
+    text = "\n".join(
+    row["content"] or ""
+    for row in rows
+)
 
     return hashlib.sha256(
         text.encode()

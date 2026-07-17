@@ -1,12 +1,15 @@
 from app.database.database import get_connection
 
+
 def get_top_sections(version_name="v2"):
 
     conn = get_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT n.id,n.title,n.level
+        SELECT n.id,
+               n.title,
+               n.level
         FROM nodes n
         JOIN document_versions dv
         ON n.version_id = dv.id
@@ -19,6 +22,8 @@ def get_top_sections(version_name="v2"):
     conn.close()
 
     return [dict(row) for row in rows]
+
+
 def get_node(node_id):
 
     conn = get_connection()
@@ -30,6 +35,14 @@ def get_node(node_id):
     )
 
     node = cursor.fetchone()
+
+    if not node:
+
+        conn.close()
+
+        return {
+            "error": "Node not found"
+        }
 
     cursor.execute(
         """
@@ -51,6 +64,8 @@ def get_node(node_id):
             for child in children
         ]
     }
+
+
 def search_nodes(query):
 
     conn = get_connection()
@@ -77,6 +92,8 @@ def search_nodes(query):
         dict(row)
         for row in rows
     ]
+
+
 def node_changes(logical_node_id):
 
     conn = get_connection()
@@ -101,16 +118,34 @@ def node_changes(logical_node_id):
     if len(rows) < 2:
 
         return {
+            "logical_node_id": logical_node_id,
             "changed": False,
-            "message": "Only one version exists"
+            "summary": "Only one version exists",
+            "versions_found": len(rows)
         }
 
-    changed = (
-        rows[0]["content_hash"]
-        != rows[-1]["content_hash"]
-    )
+    old_hash = rows[0]["content_hash"]
+    new_hash = rows[-1]["content_hash"]
+
+    changed = old_hash != new_hash
+
+    if changed:
+
+        summary = (
+            f"Content changed between "
+            f"version {rows[0]['version_id']} "
+            f"and version {rows[-1]['version_id']}"
+        )
+
+    else:
+
+        summary = (
+            "No content change detected"
+        )
 
     return {
         "logical_node_id": logical_node_id,
-        "changed": changed
+        "changed": changed,
+        "summary": summary,
+        "versions_found": len(rows)
     }

@@ -37,8 +37,8 @@ def get_generation(generation_id):
     )
 
     generation["impact"] = (
-        staleness["impact"]
-    )
+    staleness.get("impact", "unknown")
+)
 
     return generation
 def get_generations_by_selection(
@@ -74,8 +74,8 @@ def get_generations_by_selection(
         )
 
         generation["impact"] = (
-            staleness["impact"]
-        )
+            staleness.get("impact", "unknown")
+)
 
         results.append(
             generation
